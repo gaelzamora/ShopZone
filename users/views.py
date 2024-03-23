@@ -6,13 +6,22 @@ from .models import User
 from rest_framework import status
 from .serializers import RegisterUserSerializer, MyTokenObtainPairSerializer, UserSerializer
 
+@api_view(['GET'])
+def search(request):
+    query = request.query_params.get('query')
+    if query is None:
+        query = ''
+    user = User.objects.filter(email__icontains=query)
+    serializer = UserSerializer(user, many=True)
+    return Response({'users': serializer.data})
+
 @api_view(['DELETE'])
 def delete_user(request, pk):
+    user = User.objects.get(pk=pk)
     if request.user.is_staff:
-        user = User.objects.get(pk=pk)
         user.delete()
-
         return Response(status=status.HTTP_200_OK)
+    print
     return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 

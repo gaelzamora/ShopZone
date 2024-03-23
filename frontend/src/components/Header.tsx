@@ -20,7 +20,7 @@ const Header = () => {
   const cart = useCartStore(state => state.cart);
 
   let is_admin: boolean
-  let avatar: string
+  let avatar: string 
 
   if(isAuth) {
     const tokenDecoded : Token = jwt_decode(token)
@@ -37,7 +37,7 @@ const Header = () => {
 
   function logOutFun() {
     useAuthStore.getState().logout()
-    window.location.href = '/login'
+    window.location.href = '/accounts/login'
   }
 
   function classNames(...classes: any) {

@@ -20,7 +20,7 @@ function RegisterPage() {
     mutationFn: () => registerRequest(email, first_name, last_name, password),
       onSuccess: () => {
         toast.success("Registro exitoso! Hace login!")
-        navigate("/login")
+        navigate("/accounts/login")
       },
       onError: () => {
         toast.error("Hubo un error, intenta devuelta")

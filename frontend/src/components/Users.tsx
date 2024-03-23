@@ -7,7 +7,11 @@ import { User } from "../Interfaces";
 
 import { delete_user } from "../api/users";
 
-const Users = () => {
+interface Props {
+  results: any
+}
+
+const Users = ({results}: Props) => {
 
   const {data, isError, isLoading} = useQuery({
     queryKey: ['users'],
@@ -45,26 +49,54 @@ const Users = () => {
             <th scope="col" className="px-4 py-3 flex items-center justify-center gap-4">Actions</th>
           </tr>
         </thead>
-        <tbody>
-            {data && data.map((user: User) => (
-              <tr className="border-b dark:border-gray-700">
-                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{user.id}</th>
-                <td className="px-4 py-3">{user.email}</td>
-                <td className="px-4 py-3"></td>
-                <td className="px-4 py-3">{user.last_name}</td>
-                <td className="px-4 py-3 flex items-center justify-center gap-4">
-                  <BsFillTrashFill 
-                    onClick={() => {
-                      if(user.id){
-                        deleteUserMut.mutate(user.id)
-                      }
-                    }}
-                    size={22} 
-                    className="text-red-300 cursor-pointer"/>
-                </td>
-              </tr>
-            ))}
-        </tbody>
+
+        {results && results.users.length > 0 ? (
+          <tbody>
+            {results && 
+              results.users.map((user: User) => (
+                      <tr className="border-b dark:border-gray-700">
+                        <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{user.id}</th>
+                        <td className="px-4 py-3">{user.email}</td>
+                        <td className="px-4 py-3">{user.first_name}</td>
+                        <td className="px-4 py-3">{user.last_name}</td>
+                        <td className="px-4 py-3 flex items-center justify-center gap-4">
+                          <BsFillTrashFill 
+                            onClick={() => {
+                              if(user.id){
+                                deleteUserMut.mutate(user.id)
+                              }
+                            }}
+                            size={22} 
+                            className="text-red-300 cursor-pointer"/>
+                        </td>
+                      </tr>
+              ))}
+          </tbody>
+        ) : (
+          <tbody>
+            {data && 
+              data.map((user: User) => (
+                      <tr className="border-b dark:border-gray-700">
+                        <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{user.id}</th>
+                        <td className="px-4 py-3">{user.email}</td>
+                        <td className="px-4 py-3"></td>
+                        <td className="px-4 py-3">{user.last_name}</td>
+                        <td className="px-4 py-3 flex items-center justify-center gap-4">
+                          <BsFillTrashFill 
+                            onClick={() => {
+                              if(user.id){
+                                deleteUserMut.mutate(user.id)
+                              }
+                            }}
+                            size={22} 
+                            className="text-red-300 cursor-pointer"/>
+                        </td>
+                      </tr>
+              ))}
+          </tbody>
+        )}
+
+        
       </table>
     </div>
   )
